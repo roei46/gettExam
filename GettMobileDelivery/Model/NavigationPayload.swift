@@ -16,8 +16,8 @@ struct NavigationPayload: Codable {
 
 struct Geo: Codable {
     var address: String
-    var latitue: Float
-    var longitude: Float
+    var latitue: Double
+    var longitude: Double
 }
 
 struct Parcel: Codable {

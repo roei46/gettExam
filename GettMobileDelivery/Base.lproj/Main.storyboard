@@ -16,21 +16,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vw1-Nj-Tuo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stb-E2-Lhj">
                                 <rect key="frame" x="20" y="812" width="374" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="stb-E2-Lhj" secondAttribute="trailing" constant="20" id="1G5-bt-WBn"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="stb-E2-Lhj" secondAttribute="bottom" constant="20" id="ATB-sr-P2q"/>
-                            <constraint firstItem="stb-E2-Lhj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="hYt-BM-M7d"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="stb-E2-Lhj" secondAttribute="bottom" constant="20" id="1nx-CI-45o"/>
+                            <constraint firstItem="vw1-Nj-Tuo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="JxD-bQ-kZn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vw1-Nj-Tuo" secondAttribute="bottom" id="MIg-cE-aAh"/>
+                            <constraint firstItem="vw1-Nj-Tuo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="eeA-at-Hcj"/>
+                            <constraint firstItem="stb-E2-Lhj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="nR5-6q-EBE"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="stb-E2-Lhj" secondAttribute="trailing" constant="20" id="thB-vu-wza"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vw1-Nj-Tuo" secondAttribute="trailing" id="vPB-5o-6l1"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btn" destination="stb-E2-Lhj" id="X9l-2B-BES"/>
+                        <outlet property="map" destination="vw1-Nj-Tuo" id="oRX-cY-chA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
