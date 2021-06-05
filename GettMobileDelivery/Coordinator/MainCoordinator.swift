@@ -10,14 +10,19 @@ import UIKit
 
 final class MainCoordinator: Coordinator {
     let navigationController: UINavigationController
-//    private let viewModel = ToDoListViewModel()
+    private let viewModel = MainVIewModel()
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start() {
-        let viewModel = MainVIewModel()
+        viewModel.showParcels
+            .drive(onNext: { [weak self]  item in
+            guard let self = self else { return }
+     
+        })
+        .disposed(by: viewModel.disposeBag)
         
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
         vc.viewModel = viewModel

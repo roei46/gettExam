@@ -26,8 +26,8 @@ struct Output {
 }
 
 final class MainVIewModel: MainViewModelType {
-//    var mapView: GMSMapView
-    
+    var btnTitle = PublishRelay<String>()
+        
     var locationManager: CLLocationManager
     var currentLocation: CLLocation?
     var targetLocation: CLLocation?
@@ -41,8 +41,16 @@ final class MainVIewModel: MainViewModelType {
     let currentLocationMarker = GMSMarker()
     var targetMarker = GMSMarker()
     
+    var preciseLocationZoomLevel: Float = 15.0
+    var approximateLocationZoomLevel: Float = 10.0
+    lazy var zoomLevel: Float = {
+        return locationManager.accuracyAuthorization == .fullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel
+    }()
     
-    
+    let onTappedShowParcels = PublishRelay<NavigationPayload>()
+
+    lazy var showParcels = onTappedShowParcels.asDriver(onErrorDriveWith: .never())
+
     init(networking: Networking = Networking()) {
         self.networking = networking
         locationManager = CLLocationManager()
@@ -53,8 +61,15 @@ final class MainVIewModel: MainViewModelType {
         
         
         selectedItem.subscribe { item in
-            if let clllocation = item.element {
-                self.targetMarker.position = CLLocationCoordinate2D(latitude: clllocation.geo.latitue, longitude: clllocation.geo.longitude)
+            if let payload = item.element {
+                self.targetMarker.position = CLLocationCoordinate2D(latitude: payload.geo.latitue, longitude: payload.geo.longitude)
+                
+                switch payload.type {
+                case .navigateToPickUP, .navigateToDrop:
+                    self.btnTitle.accept("Arrived")
+                case .pickUp, .drop:
+                    self.btnTitle.accept("Done")
+                }
             }
         }.disposed(by: disposeBag)
 
@@ -91,30 +106,4 @@ final class MainVIewModel: MainViewModelType {
             )
         }
     }
-
-//    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload> {
-//
-//        let items = networking.loadJSON(type: [NavigationPayload].self).debug("🚘 items")
-//            return Observable.merge(
-//                trigger.debug("🚘 trigger").map { Action.next },
-//                items.map { Action.reset($0) }
-//            ).debug("🚘 merge")
-//            .scan(into: State()) { state, action in
-//                switch action {
-//                case .reset(let items):
-//                    state.all = items
-//                    state.current = 0
-//                    print("🚘 reset")
-//                case .next:
-//                    state.current = (state.current + 1) % state.all.count
-//                    print("🚘 nextroei\(state.current)")
-//
-//                }
-//            }.debug("🚘 scan")
-//            .compactMap { $0.all.isEmpty ? nil : $0.all[$0.current] }.debug("🚘 compact")
-//            .share()
-//
-//
-//        }
-//}
 }

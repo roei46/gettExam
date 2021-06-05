@@ -13,11 +13,12 @@ import GoogleMaps
 protocol MainViewModelType {
     var getNavigations: PublishRelay<Void> { get }
     var locationManager: CLLocationManager { get }
-//    var mapView: GMSMapView { get }
+    var zoomLevel: Float { get }
     var selectedItem: PublishRelay<NavigationPayload> { get }
     var targetMarker: GMSMarker { get }
-    
-    //var status: PublishRelay<String> { get }
+    var onTappedShowParcels: PublishRelay<NavigationPayload> { get }
+
+    var btnTitle: PublishRelay<String> { get }
 
 //    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload>
     func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output

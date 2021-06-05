@@ -21,8 +21,8 @@ class MainViewController: UIViewController {
     var locationManager: CLLocationManager!
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
-    var preciseLocationZoomLevel: Float = 15.0
-    var approximateLocationZoomLevel: Float = 10.0
+//    var preciseLocationZoomLevel: Float = 15.0
+//    var approximateLocationZoomLevel: Float = 10.0
     
     var targetMarker: GMSMarker?
     var path: GMSPath!
@@ -33,18 +33,16 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = viewModel.locationManager
+        locationManager.startUpdatingLocation()
         locationManager.delegate = self
+
+    }
+    
+    func setUpMap() {
+        // MARK - Create and setup map
+        let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
         
-        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
         
-        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
-        
-        
-        // Create a map.
-        let zoomLevel = locationManager.accuracyAuthorization == .fullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel
-        let camera = GMSCameraPosition.camera(withLatitude: defaultLocation.coordinate.latitude,
-                                              longitude: defaultLocation.coordinate.longitude,
-                                              zoom: zoomLevel)
         mapView = GMSMapView.map(withFrame: map.bounds, camera: camera)
         mapView.settings.myLocationButton = true
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -53,27 +51,23 @@ class MainViewController: UIViewController {
         targetMarker = GMSMarker()
                 
         self.map.addSubview(mapView)
-        
-      //  bindRx()
-        //test()
     }
     
     func bindRx() {
         btn.backgroundColor = .gray
         let myLocation = locationManager.location
-        
         let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
-        
-        btn.rx.tap.subscribe(onNext: {
-            
-            
-        })
+
+        viewModel.btnTitle
+            .bind(to: btn.rx.title())
+            .disposed(by: disposeBag)
         
         navigationPayload
             .payload
             .subscribe(onNext:{ item in
                 self.statusLbl.text = item.type.rawValue
                 self.addressLbl.text = item.geo.address
+                self.changeBtnFunc(item: item)
             })
             .disposed(by: disposeBag)
         
@@ -91,15 +85,24 @@ class MainViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-
-        
     }
+    
+    func changeBtnFunc(item: NavigationPayload) {
+        switch item.type {
+        case .pickUp, .drop:
+            viewModel.onTappedShowParcels.accept(item)
+        case .navigateToDrop, .navigateToPickUP: break
+        }
+    }
+    
     
     func drewMarker() {
         targetMarker? = viewModel.targetMarker
         targetMarker?.map = mapView
     }
     
+    //MARK:- Draw Path line
+
     func drawPath(from polyStr: String) {
         path = GMSPath(fromEncodedPath: polyStr)!
         polyline = GMSPolyline(path: path)
@@ -116,10 +119,6 @@ class MainViewController: UIViewController {
         mapView.animate(toZoom: currentZoom)
         drewMarker()
     }
-
-    
-    //MARK:- Draw Path line
-
     
 }
 // Delegates to handle events for the location manager.
@@ -130,11 +129,10 @@ extension MainViewController: CLLocationManagerDelegate {
         let location: CLLocation = locations.last!
         print("Location: \(location)")
         
-        let zoomLevel = locationManager.accuracyAuthorization == .fullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel
-        let camera = GMSCameraPosition.camera(withLatitude: 32.026037,
-                                              longitude: 34.801008,
-                                              zoom: zoomLevel)
+        let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
+        
         mapView.camera = camera
+        mapView.animate(toLocation: locationManager.location!.coordinate)
         
     }
     
@@ -161,9 +159,12 @@ extension MainViewController: CLLocationManagerDelegate {
             mapView.isHidden = false
         case .notDetermined:
             print("Location status not determined.")
-        case .authorizedAlways: fallthrough
+        case .authorizedAlways:
+            bindRx()
+            setUpMap()
         case .authorizedWhenInUse:
             bindRx()
+            setUpMap()
             print("Location status is OK.")
         @unknown default:
             fatalError()
