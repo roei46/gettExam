@@ -7,8 +7,15 @@
 
 import Foundation
 
+enum DeliveryStatus: String, Codable  {
+    case navigateToPickUP = "navigate_to_pickup"
+    case pickUp = "pickup"
+    case navigateToDrop = "navigate_to_drop_off"
+    case drop = "drop_off"
+}
+
 struct NavigationPayload: Codable {
-    var type: String
+    var type: DeliveryStatus
     var state: String
     var geo: Geo
     var parcels: [Parcel]?
@@ -28,7 +35,6 @@ struct Parcel: Codable {
 
 struct Routs: Codable {
     var routes: [Rout]
-
 }
 
 struct Rout: Codable {

@@ -25,7 +25,10 @@ class MainViewController: UIViewController {
     var approximateLocationZoomLevel: Float = 10.0
     
     var targetMarker: GMSMarker?
-    
+    var path: GMSPath!
+    var polyline: GMSPolyline!
+    @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var addressLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,115 +54,72 @@ class MainViewController: UIViewController {
                 
         self.map.addSubview(mapView)
         
-        bindRx()
+      //  bindRx()
         //test()
     }
     
     func bindRx() {
-        let navigationPayload = viewModel.bindRx(trigger: btn.rx.tap.asObservable())
+        btn.backgroundColor = .gray
+        let myLocation = locationManager.location
+        
+        let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
+        
+        btn.rx.tap.subscribe(onNext: {
+            
+            
+        })
         
         navigationPayload
-            .debug(": 🚘 oncoming_automobile: payload")
+            .payload
+            .subscribe(onNext:{ item in
+                self.statusLbl.text = item.type.rawValue
+                self.addressLbl.text = item.geo.address
+            })
+            .disposed(by: disposeBag)
+        
+        navigationPayload
+            .payload
             .bind(to: viewModel.selectedItem)
             .disposed(by: disposeBag)
-        drewMarker()
+        
+        navigationPayload
+            .routes
+            .subscribe(onNext: { route in
+                self.mapView.clear()
+                for step in route.routes[0].legs[0].steps {
+                    self.drawPath(from: step.polyline.points)
+                }
+            })
+            .disposed(by: disposeBag)
+
         
     }
     
     func drewMarker() {
         targetMarker? = viewModel.targetMarker
         targetMarker?.map = mapView
-//        test()
     }
     
-    func test() {
-        
-        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
-        
-        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
-        
-        
-        
-        let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(defaultLocation.coordinate.latitude),\(defaultLocation.coordinate.longitude)&destination=\(targetLocation.coordinate.latitude),\(targetLocation.coordinate.longitude)&sensor=false&mode=driving&key=AIzaSyBq2Z7qOER7IH0dtzYyzE4NCV8BNUTuUa8")!
-        
-        let session = URLSession.shared
-        
-        let task = session.dataTask(with: url, completionHandler: {
-            (data, response, error) in
-            
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
-            
-            guard let jsonResult = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any] else {
-                
-                print("error in JSONSerialization")
-                return
-                
-            }
-            
-            
-            
-            guard let routes = jsonResult["routes"] as? [Any] else {
-                return
-            }
-            
-            guard let route = routes[0] as? [String: Any] else {
-                return
-            }
-            
-            guard let legs = route["legs"] as? [Any] else {
-                return
-            }
-            
-            guard let leg = legs[0] as? [String: Any] else {
-                return
-            }
-            
-            guard let steps = leg["steps"] as? [Any] else {
-                return
-            }
-            for item in steps {
-                
-                guard let step = item as? [String: Any] else {
-                    return
-                }
-                
-                guard let polyline = step["polyline"] as? [String: Any] else {
-                    return
-                }
-                
-                guard let polyLineString = polyline["points"] as? String else {
-                    return
-                }
-                
-                //Call this method to draw path on map
-                DispatchQueue.main.async {
-                    self.drawPath(from: polyLineString)
-                }
-                
-            }
-        })
-        task.resume()
-    }
-    
-    //MARK:- Draw Path line
-    func drawPath(from polyStr: String){
-        let path = GMSPath(fromEncodedPath: polyStr)
-        let polyline = GMSPolyline(path: path)
+    func drawPath(from polyStr: String) {
+        path = GMSPath(fromEncodedPath: polyStr)!
+        polyline = GMSPolyline(path: path)
         polyline.strokeWidth = 3.0
         polyline.map = mapView // Google MapView
         
-        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
+//        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
+//
+//        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
         
-        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
-        
-        let cameraUpdate = GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate:  CLLocationCoordinate2D(latitude: defaultLocation.coordinate.latitude, longitude: defaultLocation.coordinate.longitude), coordinate:  CLLocationCoordinate2D(latitude: targetLocation.coordinate.latitude, longitude: targetLocation.coordinate.longitude)))
-        mapView.moveCamera(cameraUpdate)
+//        let cameraUpdate = GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate:  CLLocationCoordinate2D(latitude: defaultLocation.coordinate.latitude, longitude: defaultLocation.coordinate.longitude), coordinate:  CLLocationCoordinate2D(latitude: targetLocation.coordinate.latitude, longitude: targetLocation.coordinate.longitude)))
+//        mapView.moveCamera(cameraUpdate)
         let currentZoom = mapView.camera.zoom
-        mapView.animate(toZoom: currentZoom - 1.4)
+        mapView.animate(toZoom: currentZoom)
+        drewMarker()
     }
+
+    
+    //MARK:- Draw Path line
+
     
 }
 // Delegates to handle events for the location manager.
@@ -203,6 +163,7 @@ extension MainViewController: CLLocationManagerDelegate {
             print("Location status not determined.")
         case .authorizedAlways: fallthrough
         case .authorizedWhenInUse:
+            bindRx()
             print("Location status is OK.")
         @unknown default:
             fatalError()

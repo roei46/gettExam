@@ -16,6 +16,9 @@ protocol MainViewModelType {
 //    var mapView: GMSMapView { get }
     var selectedItem: PublishRelay<NavigationPayload> { get }
     var targetMarker: GMSMarker { get }
+    
+    //var status: PublishRelay<String> { get }
 
-    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload>
+//    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload>
+    func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output
 }
