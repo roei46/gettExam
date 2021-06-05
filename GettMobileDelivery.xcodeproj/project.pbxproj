@@ -20,6 +20,9 @@
 		D201F44C266A4EE000BB264B /* NavigationPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = D201F44B266A4EE000BB264B /* NavigationPayload.swift */; };
 		D201F46C266A54B400BB264B /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = D201F46B266A54B400BB264B /* Api.swift */; };
 		D201F46F266A575C00BB264B /* journey.json in Resources */ = {isa = PBXBuildFile; fileRef = D201F46E266A575C00BB264B /* journey.json */; };
+		D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */; };
+		D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */; };
+		D22F5A75266C0D3C00729C71 /* ParcelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */; };
 		F4B1672F2642C9F600590287 /* GoogleServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4B1672E2642C9F600590287 /* GoogleServices-Info.plist */; };
 		F4BDE32126427635006FC21D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BDE32026427635006FC21D /* AppDelegate.swift */; };
 		F4BDE32526427635006FC21D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BDE32426427635006FC21D /* MainViewController.swift */; };
@@ -43,6 +46,9 @@
 		D201F44B266A4EE000BB264B /* NavigationPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPayload.swift; sourceTree = "<group>"; };
 		D201F46B266A54B400BB264B /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		D201F46E266A575C00BB264B /* journey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = journey.json; sourceTree = "<group>"; };
+		D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelTableViewCell.swift; sourceTree = "<group>"; };
+		D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewController.swift; sourceTree = "<group>"; };
+		D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewModel.swift; sourceTree = "<group>"; };
 		F3244AAC6C3F524080D2EE68 /* Pods-GettMobileDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GettMobileDelivery.debug.xcconfig"; path = "Target Support Files/Pods-GettMobileDelivery/Pods-GettMobileDelivery.debug.xcconfig"; sourceTree = "<group>"; };
 		F4B1672E2642C9F600590287 /* GoogleServices-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleServices-Info.plist"; sourceTree = "<group>"; };
 		F4BDE31D26427635006FC21D /* GettMobileDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GettMobileDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +155,9 @@
 				D201F3F8266A33A300BB264B /* Coordinator */,
 				F4BDE32026427635006FC21D /* AppDelegate.swift */,
 				F4BDE32426427635006FC21D /* MainViewController.swift */,
+				D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */,
+				D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */,
+				D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */,
 				F4BDE32626427635006FC21D /* Main.storyboard */,
 				F4BDE32926427637006FC21D /* Assets.xcassets */,
 				D201F46E266A575C00BB264B /* journey.json */,
@@ -297,14 +306,17 @@
 				D201F437266A4E0E00BB264B /* EndpointType.swift in Sources */,
 				D201F430266A4DB900BB264B /* NetworkType.swift in Sources */,
 				F4BDE32526427635006FC21D /* MainViewController.swift in Sources */,
+				D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */,
 				F4BDE32126427635006FC21D /* AppDelegate.swift in Sources */,
 				D201F434266A4DE900BB264B /* Networking.swift in Sources */,
+				D22F5A75266C0D3C00729C71 /* ParcelsViewModel.swift in Sources */,
 				D201F46C266A54B400BB264B /* Api.swift in Sources */,
 				D201F401266A343800BB264B /* Coordinator.swift in Sources */,
 				D201F42C266A3D0700BB264B /* MainViewModelType.swift in Sources */,
 				D201F43A266A4E2A00BB264B /* Response.swift in Sources */,
 				D201F3FE266A340800BB264B /* MainCoordinator.swift in Sources */,
 				D201F3FA266A33E200BB264B /* AppCorrdinator.swift in Sources */,
+				D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */,
 				D201F429266A3CC700BB264B /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
