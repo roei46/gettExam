@@ -35,23 +35,43 @@ extension MethodsType {
 }
 
 struct Networking: NetworkType {
-    func getRoute<T>(endPoint: EndpointType, type: T.Type) -> Observable<T> where T : Decodable, T : Encodable {
-        return Observable<T>.create { (observer) -> Disposable in
+    func preformNetwokTask<T>(endPoint: EndpointType, type: T.Type, success: @escaping ((T) -> Void), failure: @escaping () -> Void) where T : Decodable, T : Encodable {
+//        guard let url = endPoint.baseURL.appendingPathComponent(endPoint.path).absoluteString.removingPercentEncoding  else { return }
+         let url = ("\(endPoint.baseURL)\(endPoint.path)")
+
+        Alamofire.request(url).responseJSON { (response) in
+            if response.result.isFailure {
+                failure()
+            }
             
-            if let url = Bundle.main.url(forResource: "journey", withExtension: "json") {
-                do {
-                    let jsonData = try Data(contentsOf: url)
+            if let data = response.data {
+                let response = Response.init(data: data)
+                if let decode = response.decode(type) {
+                    success(decode)
+                } else {
+                    failure()
+                }
+            }
+        }
+    }
+    
+    func getRoute<T: Codable>(endPoint: EndpointType, type: T.Type) -> Observable<T> {
+        
+        return Observable<T>.create { (observer) -> Disposable in
+            let url = ("\(endPoint.baseURL)\(endPoint.path)")
+                Alamofire.request(url).responseJSON { response in
+                    print(response)
+                    if response.result.isFailure {
+                        observer.onError(response.result.error!)
+                    }
                     
-                        let response = Response.init(data: jsonData)
+                    if let data = response.data {
+                        let response = Response.init(data: data)
                         if let decode = response.decode(type) {
                             observer.onNext(decode)
-
                         } else {
                             observer.onError(NSError())
                     }
-                }
-                catch {
-                    observer.onError(NSError())
                 }
             }
             return Disposables.create()
@@ -61,7 +81,7 @@ struct Networking: NetworkType {
     
     
     
-    func loadJSON<T: Codable>(endPoint: EndpointType, type: T.Type) -> Observable<T> {
+    func loadJSON<T: Codable>(type: T.Type) -> Observable<T> {
         
         return Observable<T>.create { (observer) -> Disposable in
             

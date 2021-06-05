@@ -47,27 +47,37 @@ final class MainVIewModel: MainViewModelType {
         
         selectedItem.subscribe { item in
             //
-            print("shit")
+            print("shit 🚘")
             if let clllocation = item.element {
                 self.targetMarker.position = CLLocationCoordinate2D(latitude: clllocation.geo.latitue, longitude: clllocation.geo.longitude)
             }
         }.disposed(by: disposeBag)
+        
+        
+//        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
+//        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
+        
+//        networking.preformNetwokTask(endPoint: Api.getRoute(current: defaultLocation, target: targetLocation), type: Routs.self) { (item) in
+//            //
+//        } failure: {
+//            //
+//        }
+
     }
     
-    
-    
-//    func getLocation(item: NavigationPayload) -> NavigationPayload {
-//
-//    }
-    
     func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload> {
+        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
+        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
+
         
+        let routs = networking.getRoute(endPoint: Api.getRoute(current: defaultLocation, target: targetLocation), type: Routs.self).debug("🚘 routes")
         
-        let items = networking.loadJSON(endPoint: Api.get, type: [NavigationPayload].self).debug("🚘 items")
+        let items = networking.loadJSON(type: [NavigationPayload].self).debug("🚘 items")
         
             return Observable.merge(
                 trigger.map { Action.next },
-                items.map { Action.reset($0) }
+                items.map { Action.reset($0)}
+//                routs.map { Action.reset($0)}
             ).debug("🚘 merge")
             .scan(into: State()) { state, action in
                 switch action {
