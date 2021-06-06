@@ -75,6 +75,7 @@
                         <outlet property="btn" destination="stb-E2-Lhj" id="X9l-2B-BES"/>
                         <outlet property="map" destination="vw1-Nj-Tuo" id="oRX-cY-chA"/>
                         <outlet property="statusLbl" destination="aLu-ZK-OzS" id="UCs-d8-4oi"/>
+                        <outlet property="statusView" destination="AiC-gl-1gW" id="uka-W7-Rl2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

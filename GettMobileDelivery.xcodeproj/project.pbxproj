@@ -23,6 +23,10 @@
 		D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */; };
 		D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */; };
 		D22F5A75266C0D3C00729C71 /* ParcelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */; };
+		D22F5A7D266CC47000729C71 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A7C266CC47000729C71 /* TableView.swift */; };
+		D22F5A80266CC67100729C71 /* TableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22F5A7F266CC67100729C71 /* TableView.xib */; };
+		D22F5A84266CD2E200729C71 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A82266CD2E200729C71 /* TableViewCell.swift */; };
+		D22F5A85266CD2E200729C71 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22F5A83266CD2E200729C71 /* TableViewCell.xib */; };
 		F4B1672F2642C9F600590287 /* GoogleServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4B1672E2642C9F600590287 /* GoogleServices-Info.plist */; };
 		F4BDE32126427635006FC21D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BDE32026427635006FC21D /* AppDelegate.swift */; };
 		F4BDE32526427635006FC21D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BDE32426427635006FC21D /* MainViewController.swift */; };
@@ -49,6 +53,10 @@
 		D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelTableViewCell.swift; sourceTree = "<group>"; };
 		D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewController.swift; sourceTree = "<group>"; };
 		D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewModel.swift; sourceTree = "<group>"; };
+		D22F5A7C266CC47000729C71 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		D22F5A7F266CC67100729C71 /* TableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableView.xib; sourceTree = "<group>"; };
+		D22F5A82266CD2E200729C71 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		D22F5A83266CD2E200729C71 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		F3244AAC6C3F524080D2EE68 /* Pods-GettMobileDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GettMobileDelivery.debug.xcconfig"; path = "Target Support Files/Pods-GettMobileDelivery/Pods-GettMobileDelivery.debug.xcconfig"; sourceTree = "<group>"; };
 		F4B1672E2642C9F600590287 /* GoogleServices-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleServices-Info.plist"; sourceTree = "<group>"; };
 		F4BDE31D26427635006FC21D /* GettMobileDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GettMobileDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,8 +164,12 @@
 				F4BDE32026427635006FC21D /* AppDelegate.swift */,
 				F4BDE32426427635006FC21D /* MainViewController.swift */,
 				D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */,
+				D22F5A7C266CC47000729C71 /* TableView.swift */,
+				D22F5A7F266CC67100729C71 /* TableView.xib */,
 				D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */,
 				D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */,
+				D22F5A82266CD2E200729C71 /* TableViewCell.swift */,
+				D22F5A83266CD2E200729C71 /* TableViewCell.xib */,
 				F4BDE32626427635006FC21D /* Main.storyboard */,
 				F4BDE32926427637006FC21D /* Assets.xcassets */,
 				D201F46E266A575C00BB264B /* journey.json */,
@@ -230,7 +242,9 @@
 			files = (
 				D201F46F266A575C00BB264B /* journey.json in Resources */,
 				F4BDE32D26427637006FC21D /* LaunchScreen.storyboard in Resources */,
+				D22F5A85266CD2E200729C71 /* TableViewCell.xib in Resources */,
 				F4BDE32A26427637006FC21D /* Assets.xcassets in Resources */,
+				D22F5A80266CC67100729C71 /* TableView.xib in Resources */,
 				F4B1672F2642C9F600590287 /* GoogleServices-Info.plist in Resources */,
 				F4BDE32826427635006FC21D /* Main.storyboard in Resources */,
 			);
@@ -305,6 +319,7 @@
 				D201F44C266A4EE000BB264B /* NavigationPayload.swift in Sources */,
 				D201F437266A4E0E00BB264B /* EndpointType.swift in Sources */,
 				D201F430266A4DB900BB264B /* NetworkType.swift in Sources */,
+				D22F5A84266CD2E200729C71 /* TableViewCell.swift in Sources */,
 				F4BDE32526427635006FC21D /* MainViewController.swift in Sources */,
 				D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */,
 				F4BDE32126427635006FC21D /* AppDelegate.swift in Sources */,
@@ -314,6 +329,7 @@
 				D201F401266A343800BB264B /* Coordinator.swift in Sources */,
 				D201F42C266A3D0700BB264B /* MainViewModelType.swift in Sources */,
 				D201F43A266A4E2A00BB264B /* Response.swift in Sources */,
+				D22F5A7D266CC47000729C71 /* TableView.swift in Sources */,
 				D201F3FE266A340800BB264B /* MainCoordinator.swift in Sources */,
 				D201F3FA266A33E200BB264B /* AppCorrdinator.swift in Sources */,
 				D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */,

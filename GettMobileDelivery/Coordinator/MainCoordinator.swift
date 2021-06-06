@@ -20,7 +20,7 @@ final class MainCoordinator: Coordinator {
         viewModel.showParcels
             .drive(onNext: { [weak self]  item in
                 guard let self = self else { return }
-                self.showParcels(with: item)
+              //  self.showParcels(with: item)
             })
             .disposed(by: viewModel.disposeBag)
         

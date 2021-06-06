@@ -21,7 +21,8 @@ class MainViewController: UIViewController {
     var locationManager: CLLocationManager!
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
-//    var preciseLocationZoomLevel: Float = 15.0
+    @IBOutlet weak var statusView: UIView!
+    //    var preciseLocationZoomLevel: Float = 15.0
 //    var approximateLocationZoomLevel: Float = 10.0
     
     var targetMarker: GMSMarker?
@@ -29,7 +30,8 @@ class MainViewController: UIViewController {
     var polyline: GMSPolyline!
     @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var addressLbl: UILabel!
-    
+    var viewTest: TableView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = viewModel.locationManager
@@ -51,6 +53,14 @@ class MainViewController: UIViewController {
         targetMarker = GMSMarker()
                 
         self.map.addSubview(mapView)
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+//            let view = TableView(frame: self.view.frame)
+//            self.map.addSubview(view)
+//
+//        }
+
+
     }
     
     func bindRx() {
@@ -68,6 +78,7 @@ class MainViewController: UIViewController {
                 self.statusLbl.text = item.type.rawValue
                 self.addressLbl.text = item.geo.address
                 self.changeBtnFunc(item: item)
+                
             })
             .disposed(by: disposeBag)
         
@@ -88,10 +99,21 @@ class MainViewController: UIViewController {
     }
     
     func changeBtnFunc(item: NavigationPayload) {
+        
         switch item.type {
         case .pickUp, .drop:
-            viewModel.onTappedShowParcels.accept(item)
-        case .navigateToDrop, .navigateToPickUP: break
+            let viewModel = ParcelsViewModel(items: item)
+
+            viewTest = TableView(frame: self.view.frame, viewModel: viewModel)
+            if let addView = viewTest {
+                self.map.addSubview(addView)
+                statusView.isHidden = true
+            }
+        case .navigateToDrop, .navigateToPickUP:
+            if viewTest != nil {
+                self.viewTest?.removeFromSuperview()
+                statusView.isHidden = false
+            }
         }
     }
     
