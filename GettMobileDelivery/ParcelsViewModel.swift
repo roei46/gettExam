@@ -14,10 +14,13 @@ final class ParcelsViewModel {
     let items = BehaviorRelay<[Parcel]>(value: [])
 
     var title: String!
-    
+
     init(items: NavigationPayload) {
         if let parcels = items.parcels {
-            self.items.accept(parcels)
+            var new = [Parcel]()
+            new.append(Parcel(barcode: "", display_identifier: "header"))
+            new.append(contentsOf: parcels)
+            self.items.accept(new)
         }
         
         switch items.type {

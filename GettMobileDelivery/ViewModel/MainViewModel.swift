@@ -15,6 +15,7 @@ enum Action {
         case reset([NavigationPayload])
         case next
     }
+
     struct State {
         var all: [NavigationPayload] = []
         var current: Int = 0
@@ -29,8 +30,6 @@ final class MainVIewModel: MainViewModelType {
     var btnTitle = PublishRelay<String>()
         
     var locationManager: CLLocationManager
-    var currentLocation: CLLocation?
-    var targetLocation: CLLocation?
     let disposeBag = DisposeBag()
 
     var networking: NetworkType
@@ -47,9 +46,9 @@ final class MainVIewModel: MainViewModelType {
         return locationManager.accuracyAuthorization == .fullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel
     }()
     
-    let onTappedShowParcels = PublishRelay<NavigationPayload>()
-
-    lazy var showParcels = onTappedShowParcels.asDriver(onErrorDriveWith: .never())
+    var hideView = PublishRelay<Bool>()
+    let myStateObservable = BehaviorRelay<Bool>(value: false)
+    lazy var showEndOfDeliviry = myStateObservable.asDriver(onErrorDriveWith: .never())
 
     init(networking: Networking = Networking()) {
         self.networking = networking
@@ -67,8 +66,10 @@ final class MainVIewModel: MainViewModelType {
                 switch payload.type {
                 case .navigateToPickUP, .navigateToDrop:
                     self.btnTitle.accept("Arrived")
+                    self.hideView.accept(false)
                 case .pickUp, .drop:
                     self.btnTitle.accept("Done")
+                    self.hideView.accept(true)
                 }
             }
         }.disposed(by: disposeBag)
@@ -76,9 +77,9 @@ final class MainVIewModel: MainViewModelType {
     }
     
     func isLastItem(state: State) -> Bool {
-        return (state.all.last != nil) ? true : false
+        return state.all.count - 1 == state.current
     }
-
+        
     func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output {
         { trigger in
 
@@ -88,6 +89,7 @@ final class MainVIewModel: MainViewModelType {
                 items.debug("🚘 merge item").map { Action.reset($0) }
             ).debug("🚘 merge all")
             .scan(into: State()) { state, action in
+                self.myStateObservable.accept(self.isLastItem(state: state))
                 switch action {
                 case .reset(let items):
                     state.all = items

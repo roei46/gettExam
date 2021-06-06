@@ -22,6 +22,7 @@ class TableViewCell: UITableViewCell {
     }
     
     func config(name: String) {
+
         parcelLabel.text = name
     }
     

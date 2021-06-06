@@ -16,8 +16,8 @@ protocol MainViewModelType {
     var zoomLevel: Float { get }
     var selectedItem: PublishRelay<NavigationPayload> { get }
     var targetMarker: GMSMarker { get }
-    var onTappedShowParcels: PublishRelay<NavigationPayload> { get }
-
+//    var onTappedShowParcels: PublishRelay<NavigationPayload> { get }
+    var hideView: PublishRelay<Bool> { get }
     var btnTitle: PublishRelay<String> { get }
 
 //    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload>

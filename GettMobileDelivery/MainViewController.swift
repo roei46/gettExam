@@ -19,11 +19,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var map: UIView!
     
     var locationManager: CLLocationManager!
-    var currentLocation: CLLocation?
     var mapView: GMSMapView!
     @IBOutlet weak var statusView: UIView!
-    //    var preciseLocationZoomLevel: Float = 15.0
-//    var approximateLocationZoomLevel: Float = 10.0
     
     var targetMarker: GMSMarker?
     var path: GMSPath!
@@ -53,14 +50,6 @@ class MainViewController: UIViewController {
         targetMarker = GMSMarker()
                 
         self.map.addSubview(mapView)
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-//            let view = TableView(frame: self.view.frame)
-//            self.map.addSubview(view)
-//
-//        }
-
-
     }
     
     func bindRx() {
@@ -68,6 +57,10 @@ class MainViewController: UIViewController {
         let myLocation = locationManager.location
         let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
 
+        viewModel.hideView
+            .bind(to: statusView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
         viewModel.btnTitle
             .bind(to: btn.rx.title())
             .disposed(by: disposeBag)
@@ -99,20 +92,16 @@ class MainViewController: UIViewController {
     }
     
     func changeBtnFunc(item: NavigationPayload) {
-        
         switch item.type {
         case .pickUp, .drop:
             let viewModel = ParcelsViewModel(items: item)
-
             viewTest = TableView(frame: self.view.frame, viewModel: viewModel)
             if let addView = viewTest {
                 self.map.addSubview(addView)
-                statusView.isHidden = true
             }
         case .navigateToDrop, .navigateToPickUP:
             if viewTest != nil {
                 self.viewTest?.removeFromSuperview()
-                statusView.isHidden = false
             }
         }
     }
@@ -129,14 +118,8 @@ class MainViewController: UIViewController {
         path = GMSPath(fromEncodedPath: polyStr)!
         polyline = GMSPolyline(path: path)
         polyline.strokeWidth = 3.0
-        polyline.map = mapView // Google MapView
+        polyline.map = mapView 
         
-//        let defaultLocation = CLLocation(latitude: 32.071813, longitude: 34.775485)
-//
-//        let targetLocation = CLLocation(latitude: 32.069803005741484, longitude: 34.7715155846415)
-        
-//        let cameraUpdate = GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate:  CLLocationCoordinate2D(latitude: defaultLocation.coordinate.latitude, longitude: defaultLocation.coordinate.longitude), coordinate:  CLLocationCoordinate2D(latitude: targetLocation.coordinate.latitude, longitude: targetLocation.coordinate.longitude)))
-//        mapView.moveCamera(cameraUpdate)
         let currentZoom = mapView.camera.zoom
         mapView.animate(toZoom: currentZoom)
         drewMarker()
