@@ -18,19 +18,14 @@ class ParcelsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         bindRx()
-        
     }
     
-    
     func bindRx() {
-        //tableView.register(UINib(nibName: "ParcelTableViewCell", bundle: nil), forCellReuseIdentifier: "parcelCell")
-
+        navigationItem.title = viewModel.title
+        
         viewModel.items.bind(to: tableView.rx.items(cellIdentifier: "parcelCell", cellType: ParcelTableViewCell.self)) { (row,item,cell) in
             cell.config(parcel: item)
         }.disposed(by: disposeBag)
-        
-        
     }
 }

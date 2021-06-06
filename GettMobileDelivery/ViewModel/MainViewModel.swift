@@ -74,15 +74,19 @@ final class MainVIewModel: MainViewModelType {
         }.disposed(by: disposeBag)
 
     }
+    
+    func isLastItem(state: State) -> Bool {
+        return (state.all.last != nil) ? true : false
+    }
 
     func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output {
         { trigger in
 
             let items = self.networking.loadJSON(type: [NavigationPayload].self).debug("🚘 items")
             let currentItem = Observable.merge(
-                trigger.debug("🚘 trigger").map { Action.next },
-                items.map { Action.reset($0) }
-            ).debug("🚘 merge")
+                trigger.debug("🚘 merge trigger").map { Action.next },
+                items.debug("🚘 merge item").map { Action.reset($0) }
+            ).debug("🚘 merge all")
             .scan(into: State()) { state, action in
                 switch action {
                 case .reset(let items):
