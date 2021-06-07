@@ -144,7 +144,7 @@ extension MainViewController: CLLocationManagerDelegate {
         
         let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
         
-            mapView.camera = camera
+        mapView.camera = camera
         mapView.animate(toLocation: locationManager.location!.coordinate)
     }
     

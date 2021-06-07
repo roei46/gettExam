@@ -36,7 +36,6 @@ extension MethodsType {
 
 struct Networking: NetworkType {
     func preformNetwokTask<T>(endPoint: EndpointType, type: T.Type, success: @escaping ((T) -> Void), failure: @escaping () -> Void) where T : Decodable, T : Encodable {
-//        guard let url = endPoint.baseURL.appendingPathComponent(endPoint.path).absoluteString.removingPercentEncoding  else { return }
          let url = ("\(endPoint.baseURL)\(endPoint.path)")
 
         Alamofire.request(url).responseJSON { (response) in

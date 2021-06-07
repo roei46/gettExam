@@ -18,9 +18,11 @@ final class MainCoordinator: Coordinator {
     
     func start() {
         viewModel.showEndOfDeliviry
-            .drive(onNext: { [weak self]  item in
+            .drive(onNext: { [weak self]  isEnd in
                 guard let self = self else { return }
-              //  self.showParcels(with: item)
+                if isEnd {
+                    self.showAlert()
+                }
             })
             .disposed(by: viewModel.disposeBag)
         
@@ -31,11 +33,9 @@ final class MainCoordinator: Coordinator {
     }
 }
 
-//extension MainCoordinator {
-//    func showParcels(with item: NavigationPayload) {
-//        let viewModel = ParcelsViewModel(items: item)
-//        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ParcelsViewController") as! ParcelsViewController
-//        vc.viewModel = viewModel
-//        navigationController.pushViewController(vc, animated: true)
-//    }
-//}
+extension MainCoordinator {
+    func showAlert() {
+        let alertController = UIAlertController(title: "Deliviry Completed!", message: "Now go and drink a beer or two!", preferredStyle: .alert)
+        self.navigationController.present(alertController, animated: true, completion: nil)
+    }
+}

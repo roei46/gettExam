@@ -110,8 +110,9 @@
 		D201F427266A3CAD00BB264B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				D201F428266A3CC700BB264B /* MainViewModel.swift */,
 				D201F42B266A3D0700BB264B /* MainViewModelType.swift */,
+				D201F428266A3CC700BB264B /* MainViewModel.swift */,
+				D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -134,6 +135,15 @@
 				D201F44B266A4EE000BB264B /* NavigationPayload.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D2CD5BF4266E66C80011A869 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F4BDE32426427635006FC21D /* MainViewController.swift */,
+				D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		F4BDE31426427635006FC21D = {
@@ -162,11 +172,9 @@
 				D201F427266A3CAD00BB264B /* ViewModel */,
 				D201F3F8266A33A300BB264B /* Coordinator */,
 				F4BDE32026427635006FC21D /* AppDelegate.swift */,
-				F4BDE32426427635006FC21D /* MainViewController.swift */,
-				D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */,
+				D2CD5BF4266E66C80011A869 /* ViewController */,
 				D22F5A7C266CC47000729C71 /* TableView.swift */,
 				D22F5A7F266CC67100729C71 /* TableView.xib */,
-				D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */,
 				D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */,
 				D22F5A82266CD2E200729C71 /* TableViewCell.swift */,
 				D22F5A83266CD2E200729C71 /* TableViewCell.xib */,
