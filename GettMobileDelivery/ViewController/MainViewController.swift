@@ -21,26 +21,23 @@ class MainViewController: UIViewController {
     var viewModel: MainViewModelType!
     let disposeBag = DisposeBag()
     
-    var locationManager: CLLocationManager!
     var mapView: GMSMapView!
     var targetMarker: GMSMarker?
     var path: GMSPath!
     var polyline: GMSPolyline!
-    
     var viewParcels: TableView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager = viewModel.locationManager
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
-        self.locationManager.startUpdatingLocation()
+        viewModel.locationManager.startUpdatingLocation()
+        viewModel.locationManager.delegate = self
         statusViewTopConstraint.constant = (navigationController?.navigationBar.frame.height)!
     }
     
     func setUpMap() {
         // MARK - Create and setup map
-        let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
+        guard let location = viewModel.locationManager.location else { return }
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: viewModel.locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
         
         
         mapView = GMSMapView.map(withFrame: map.bounds, camera: camera)
@@ -51,14 +48,13 @@ class MainViewController: UIViewController {
         targetMarker = GMSMarker()
         
         self.map.addSubview(mapView)
-        self.locationManager.startUpdatingLocation()
     }
     
     func bindRx() {
         btn.backgroundColor = .gray
-        let myLocation = locationManager.location
-        let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
-        
+        guard let location = viewModel.locationManager.location else { return }
+        let navigationPayload = viewModel.bindRx(defaultLocation: location)(btn.rx.tap.asObservable())
+
         viewModel.titleToshow
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -133,13 +129,11 @@ extension MainViewController: CLLocationManagerDelegate {
     
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location: CLLocation = locations.last!
-        print("Location: \(location)")
-        
-        let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
-        
+        guard let location = viewModel.locationManager.location else { return }
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.latitude, zoom: viewModel.zoomLevel)
+
         mapView.camera = camera
-        mapView.animate(toLocation: locationManager.location!.coordinate)
+        mapView.animate(toLocation: location.coordinate)
     }
     
     // Handle authorization for the location manager.
@@ -175,11 +169,5 @@ extension MainViewController: CLLocationManagerDelegate {
         @unknown default:
             fatalError()
         }
-    }
-    
-    // Handle location manager errors.
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
-        print("Error: \(error)")
     }
 }
