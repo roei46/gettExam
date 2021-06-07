@@ -46,6 +46,9 @@ final class MainVIewModel: MainViewModelType {
         return locationManager.accuracyAuthorization == .fullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel
     }()
     
+//    var showStatusView = PublishRelay<TableView>()
+    var titleToshow = PublishRelay<String>()
+
     var hideView = PublishRelay<Bool>()
     let myStateObservable = BehaviorRelay<Bool>(value: false)
     lazy var showEndOfDeliviry = myStateObservable.asDriver(onErrorDriveWith: .never())
@@ -58,28 +61,41 @@ final class MainVIewModel: MainViewModelType {
         locationManager.distanceFilter = 50
         locationManager.startUpdatingLocation()
         
-        
         selectedItem.subscribe { item in
             if let payload = item.element {
+                
                 self.targetMarker.position = CLLocationCoordinate2D(latitude: payload.geo.latitue, longitude: payload.geo.longitude)
                 
                 switch payload.type {
                 case .navigateToPickUP, .navigateToDrop:
                     self.btnTitle.accept("Arrived")
                     self.hideView.accept(false)
-                case .pickUp, .drop:
+                case .pickUp:
                     self.btnTitle.accept("Done")
                     self.hideView.accept(true)
+                    self.titleToshow.accept("Pickup")
+                case .drop:
+                    self.btnTitle.accept("Done")
+                    self.hideView.accept(true)
+                    self.titleToshow.accept("Drop")
+
+//                    showStatusView.accept(setView(frame: <#T##CGRect#>, item: <#T##NavigationPayload#>))
                 }
             }
         }.disposed(by: disposeBag)
-
+        
+        
+    }
+    
+    func setView(frame: CGRect, item: NavigationPayload) -> TableView {
+        let viewModel = ParcelsViewModel(items: item)
+        return TableView(frame: frame, viewModel: viewModel)
     }
     
     func isLastItem(state: State) -> Bool {
         return state.all.count - 1 == state.current
     }
-        
+            
     func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output {
         { trigger in
 

@@ -19,7 +19,7 @@ protocol MainViewModelType {
 //    var onTappedShowParcels: PublishRelay<NavigationPayload> { get }
     var hideView: PublishRelay<Bool> { get }
     var btnTitle: PublishRelay<String> { get }
-
+    var titleToshow: PublishRelay<String> { get }
 //    func bindRx(trigger: Observable<Void>) -> Observable<NavigationPayload>
     func bindRx(defaultLocation: CLLocation) -> (_ trigger: Observable<Void>) -> Output
 }

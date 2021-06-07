@@ -12,9 +12,8 @@ import RxCocoa
 final class ParcelsViewModel {
     
     let items = BehaviorRelay<[Parcel]>(value: [])
-
     var title: String!
-
+    
     init(items: NavigationPayload) {
         if let parcels = items.parcels {
             var new = [Parcel]()
@@ -25,9 +24,9 @@ final class ParcelsViewModel {
         
         switch items.type {
         case .pickUp:
-            title = "Pickup"
+            title = "Parcels to collect:"
         case.drop:
-            title = "Drop-Off"
+            title = "Parcels to deliver:"
         case .navigateToDrop, .navigateToPickUP: break
         }
     }

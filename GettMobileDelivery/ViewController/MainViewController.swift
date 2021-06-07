@@ -63,6 +63,10 @@ class MainViewController: UIViewController {
         let myLocation = locationManager.location
         let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
 
+        viewModel.titleToshow
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
         viewModel.hideView
             .bind(to: statusView.rx.isHidden)
             .disposed(by: disposeBag)
