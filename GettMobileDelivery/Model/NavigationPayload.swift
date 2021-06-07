@@ -12,6 +12,16 @@ enum DeliveryStatus: String, Codable  {
     case pickUp = "pickup"
     case navigateToDrop = "navigate_to_drop_off"
     case drop = "drop_off"
+    
+    var rawValue: String {
+        switch self {
+        case .navigateToPickUP:
+            return "Pickup point"
+        case .pickUp, .drop: return ""
+        case .navigateToDrop:
+            return "Drop Off"
+        }
+    }
 }
 
 struct NavigationPayload: Codable {
