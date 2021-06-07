@@ -21,6 +21,7 @@ class MainViewController: UIViewController {
     var locationManager: CLLocationManager!
     var mapView: GMSMapView!
     @IBOutlet weak var statusView: UIView!
+    @IBOutlet weak var statusViewTopConstraint: NSLayoutConstraint!
     
     var targetMarker: GMSMarker?
     var path: GMSPath!
@@ -34,7 +35,11 @@ class MainViewController: UIViewController {
         locationManager = viewModel.locationManager
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
+        
+        statusViewTopConstraint.constant = (navigationController?.navigationBar.frame.height)!
+        self.locationManager.startUpdatingLocation()
 
+       // setUpMap()
     }
     
     func setUpMap() {
@@ -50,6 +55,7 @@ class MainViewController: UIViewController {
         targetMarker = GMSMarker()
                 
         self.map.addSubview(mapView)
+        self.locationManager.startUpdatingLocation()
     }
     
     func bindRx() {
