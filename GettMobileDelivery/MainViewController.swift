@@ -84,8 +84,10 @@ class MainViewController: UIViewController {
             .routes
             .subscribe(onNext: { route in
                 self.mapView.clear()
-                for step in route.routes[0].legs[0].steps {
-                    self.drawPath(from: step.polyline.points)
+                guard let steps = route.routes?[0].legs?[0].steps else { return }
+                for step in steps {
+                    guard let point = step.polyline?.points else { return }
+                    self.drawPath(from: point)
                 }
             })
             .disposed(by: disposeBag)
@@ -136,9 +138,8 @@ extension MainViewController: CLLocationManagerDelegate {
         
         let camera = GMSCameraPosition.camera(withLatitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.latitude, zoom: viewModel.zoomLevel)
         
-        mapView.camera = camera
+            mapView.camera = camera
         mapView.animate(toLocation: locationManager.location!.coordinate)
-        
     }
     
     // Handle authorization for the location manager.

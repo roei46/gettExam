@@ -34,21 +34,21 @@ struct Parcel: Codable {
 
 
 struct Routs: Codable {
-    var routes: [Rout]
+    var routes: [Rout]?
 }
 
 struct Rout: Codable {
-    var legs: [Leg]
+    var legs: [Leg]?
 }
 
 struct Leg: Codable {
-    var steps: [Step]
+    var steps: [Step]?
 }
 
 struct Step: Codable {
-    var polyline: Polyline
+    var polyline: Polyline?
 }
 
 struct Polyline: Codable {
-    var points: String
+    var points: String?
 }
