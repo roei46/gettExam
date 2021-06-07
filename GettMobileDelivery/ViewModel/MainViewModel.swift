@@ -110,6 +110,7 @@ final class MainVIewModel: MainViewModelType {
                     state.current = 0
                 case .next:
                     state.current = (state.current + 1) % state.all.count
+                    // MARK - Reset when arriving to last point
                 }
             }.debug("🚘 scan")
             .compactMap { $0.all.isEmpty ? nil : $0.all[$0.current] }.debug("🚘 compact")
