@@ -35,7 +35,7 @@ final class MainCoordinator: Coordinator {
 
 extension MainCoordinator {
     func showAlert() {
-        let alertController = UIAlertController(title: "Deliviry Completed!", message: "Now go and drink a beer or two!", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Delivery Completed!", message: "Now go and drink a beer or two!", preferredStyle: .alert)
         self.navigationController.present(alertController, animated: true, completion: nil)
     }
 }

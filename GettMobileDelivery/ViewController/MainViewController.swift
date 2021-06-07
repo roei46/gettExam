@@ -11,35 +11,31 @@ import RxCocoa
 import GoogleMaps
 
 class MainViewController: UIViewController {
-    
+    @IBOutlet weak var map: UIView!
+    @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var btn: UIButton!
+    @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var addressLbl: UILabel!
+    @IBOutlet weak var statusViewTopConstraint: NSLayoutConstraint!
+    
     var viewModel: MainViewModelType!
     let disposeBag = DisposeBag()
     
-    @IBOutlet weak var map: UIView!
-    
     var locationManager: CLLocationManager!
     var mapView: GMSMapView!
-    @IBOutlet weak var statusView: UIView!
-    @IBOutlet weak var statusViewTopConstraint: NSLayoutConstraint!
-    
     var targetMarker: GMSMarker?
     var path: GMSPath!
     var polyline: GMSPolyline!
-    @IBOutlet weak var statusLbl: UILabel!
-    @IBOutlet weak var addressLbl: UILabel!
-    var viewTest: TableView?
-
+    
+    var viewParcels: TableView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = viewModel.locationManager
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
-        
-        statusViewTopConstraint.constant = (navigationController?.navigationBar.frame.height)!
         self.locationManager.startUpdatingLocation()
-
-       // setUpMap()
+        statusViewTopConstraint.constant = (navigationController?.navigationBar.frame.height)!
     }
     
     func setUpMap() {
@@ -53,7 +49,7 @@ class MainViewController: UIViewController {
         mapView.isMyLocationEnabled = true
         
         targetMarker = GMSMarker()
-                
+        
         self.map.addSubview(mapView)
         self.locationManager.startUpdatingLocation()
     }
@@ -62,7 +58,7 @@ class MainViewController: UIViewController {
         btn.backgroundColor = .gray
         let myLocation = locationManager.location
         let navigationPayload = viewModel.bindRx(defaultLocation: myLocation!)(btn.rx.tap.asObservable())
-
+        
         viewModel.titleToshow
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -81,7 +77,6 @@ class MainViewController: UIViewController {
                 self.statusLbl.text = item.type.rawValue
                 self.addressLbl.text = item.geo.address
                 self.changeBtnFunc(item: item)
-                
             })
             .disposed(by: disposeBag)
         
@@ -106,18 +101,14 @@ class MainViewController: UIViewController {
     func changeBtnFunc(item: NavigationPayload) {
         switch item.type {
         case .pickUp, .drop:
-            let viewModel = ParcelsViewModel(items: item)
-            viewTest = TableView(frame: self.view.frame, viewModel: viewModel)
-            if let addView = viewTest {
-                self.map.addSubview(addView)
-            }
+            viewParcels = viewModel.setView(frame: self.view.frame, item: item)
+            guard let view = viewParcels else { return }
+            self.map.addSubview(view)
         case .navigateToDrop, .navigateToPickUP:
-            if viewTest != nil {
-                self.viewTest?.removeFromSuperview()
-            }
+            guard let viewToRemove = viewParcels else { return }
+            viewToRemove.removeFromSuperview()
         }
     }
-    
     
     func drewMarker() {
         targetMarker? = viewModel.targetMarker
@@ -125,7 +116,7 @@ class MainViewController: UIViewController {
     }
     
     //MARK:- Draw Path line
-
+    
     func drawPath(from polyStr: String) {
         path = GMSPath(fromEncodedPath: polyStr)!
         polyline = GMSPolyline(path: path)
@@ -136,7 +127,6 @@ class MainViewController: UIViewController {
         mapView.animate(toZoom: currentZoom)
         drewMarker()
     }
-    
 }
 // Delegates to handle events for the location manager.
 extension MainViewController: CLLocationManagerDelegate {
