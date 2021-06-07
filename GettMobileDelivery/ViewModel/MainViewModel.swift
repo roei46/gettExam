@@ -94,13 +94,13 @@ final class MainVIewModel: MainViewModelType {
             
             // MARK - trigger represents the button tap action
             // MARK - items creates an observable that will make a networking request every time it's subscribed to.
-           // items subscrive one thus for he will make one network call
+           // items subscrive one time thus for it will make one network call
             let items = self.networking.loadJSON(type: [NavigationPayload].self).debug("🚘 items")
             // MARK - .merge creates an Observable<Action> that will emit all the values that either of its source observables emit.
             let currentItem = Observable.merge(
                 //MARK - items.map { Action.reset($0) } creates an Observable<Action> that, when subscribed to, will make the network request, wait for the response, then wrap the response in an Action
                 trigger.debug("🚘 merge trigger").map { Action.next },
-                items.debug("🚘 merge item").map { Action.reset($0) }
+                items.debug("🚘 merge items").map { Action.reset($0) }
             ).debug("🚘 merge all")
             .scan(into: State()) { state, action in
                 self.myStateObservable.accept(self.isLastItem(state: state))
@@ -114,7 +114,7 @@ final class MainVIewModel: MainViewModelType {
             }.debug("🚘 scan")
             .compactMap { $0.all.isEmpty ? nil : $0.all[$0.current] }.debug("🚘 compact")
             .share(replay: 1)
-
+            //MARK - The replay: 1 will store the last emitted value and replay it to any new subscribers
             let routes = currentItem.debug("🚘 currentItem flat")
                 .flatMap { item in
                     self.networking.getRoute(endPoint: Api.getRoute(current: defaultLocation, target: CLLocation(latitude: item.geo.latitue, longitude: item.geo.longitude)), type: Routs.self)
