@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import GoogleMaps
+import MBProgressHUD
 
 class MainViewController: UIViewController {
     @IBOutlet weak var map: UIView!
@@ -26,6 +27,13 @@ class MainViewController: UIViewController {
     var path: GMSPath!
     var polyline: GMSPolyline!
     var viewParcels: TableView?
+    
+    private var hud: MBProgressHUD = {
+        let progress = MBProgressHUD()
+        progress.mode = MBProgressHUDMode.indeterminate
+        progress.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        return progress
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +99,11 @@ class MainViewController: UIViewController {
                     self.drawPath(from: point)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        navigationPayload
+            .isLoading
+            .bind(to: hud.rx.animation)
             .disposed(by: disposeBag)
     }
     

@@ -7,4 +7,5 @@ target 'GettMobileDelivery' do
        pod 'RxSwift'
        pod 'RxCocoa'
        pod 'Alamofire'
+       pod "MBProgressHUD"
 end

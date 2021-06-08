@@ -24,6 +24,7 @@ enum Action {
 struct Output {
     let payload: Observable<NavigationPayload>
     let routes: Observable<Routs>
+    let isLoading: Observable<Bool>
 }
 
 final class MainVIewModel: MainViewModelType {
@@ -135,12 +136,19 @@ final class MainVIewModel: MainViewModelType {
                 .flatMap { item in
                     self.networking.getRoute(endPoint: Api.getRoute(current: defaultLocation, target: CLLocation(latitude: item.geo.latitue, longitude: item.geo.longitude)), type: Routs.self)
                 }
+            
+            //Mark - Oberver to know if we still loading
+            let isLoading = Observable.merge(
+                currentItem.map { _ in true },
+                routes.map { _ in false }
+            )
 
             // MARK - The first tap will cause trigger to emit a Void, which will cause map { Action.next } to emit an Action.next which will cause merge to emit an Action.next which will cause scan to emit a State object
             
             return Output(
                 payload: currentPayload,
-                routes: routes
+                routes: routes,
+                isLoading: isLoading
             )
         }
     }
