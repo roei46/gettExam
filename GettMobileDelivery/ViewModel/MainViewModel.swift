@@ -60,25 +60,29 @@ final class MainVIewModel: MainViewModelType {
         locationManager.startUpdatingLocation()
         
         // MARK - Subscribing to selected items in order to manipulate the vc views
-        selectedItem.subscribe { item in
+        selectedItem.subscribe { [weak self] item in
             if let payload = item.element {
-                self.targetMarker.position = CLLocationCoordinate2D(latitude: payload.geo.latitue, longitude: payload.geo.longitude)
-                switch payload.type {
-                case .navigateToPickUP, .navigateToDrop:
-                    self.btnTitle.accept("Arrived")
-                    self.hideView.accept(false)
-                    self.titleToshow.accept("")
-                case .pickUp:
-                    self.btnTitle.accept("Done")
-                    self.hideView.accept(true)
-                    self.titleToshow.accept("Pickup")
-                case .drop:
-                    self.btnTitle.accept("Done")
-                    self.hideView.accept(true)
-                    self.titleToshow.accept("Drop")
-                }
+                self?.setViewElements(from: payload)
             }
         }.disposed(by: disposeBag)
+    }
+    
+    private func setViewElements(from payLoad: NavigationPayload) {
+        self.targetMarker.position = CLLocationCoordinate2D(latitude: payLoad.geo.latitue, longitude: payLoad.geo.longitude)
+        switch payLoad.type {
+        case .navigateToPickUP, .navigateToDrop:
+            self.btnTitle.accept("Arrived")
+            self.hideView.accept(false)
+            self.titleToshow.accept("")
+        case .pickUp:
+            self.btnTitle.accept("Done")
+            self.hideView.accept(true)
+            self.titleToshow.accept("Pickup")
+        case .drop:
+            self.btnTitle.accept("Done")
+            self.hideView.accept(true)
+            self.titleToshow.accept("Drop")
+        }
     }
     
     func setView(frame: CGRect, item: NavigationPayload) -> TableView {
