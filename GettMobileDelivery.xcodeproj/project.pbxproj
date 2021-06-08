@@ -20,8 +20,6 @@
 		D201F44C266A4EE000BB264B /* NavigationPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = D201F44B266A4EE000BB264B /* NavigationPayload.swift */; };
 		D201F46C266A54B400BB264B /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = D201F46B266A54B400BB264B /* Api.swift */; };
 		D201F46F266A575C00BB264B /* journey.json in Resources */ = {isa = PBXBuildFile; fileRef = D201F46E266A575C00BB264B /* journey.json */; };
-		D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */; };
-		D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */; };
 		D22F5A75266C0D3C00729C71 /* ParcelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */; };
 		D22F5A7D266CC47000729C71 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22F5A7C266CC47000729C71 /* TableView.swift */; };
 		D22F5A80266CC67100729C71 /* TableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22F5A7F266CC67100729C71 /* TableView.xib */; };
@@ -50,8 +48,6 @@
 		D201F44B266A4EE000BB264B /* NavigationPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPayload.swift; sourceTree = "<group>"; };
 		D201F46B266A54B400BB264B /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		D201F46E266A575C00BB264B /* journey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = journey.json; sourceTree = "<group>"; };
-		D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelTableViewCell.swift; sourceTree = "<group>"; };
-		D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewController.swift; sourceTree = "<group>"; };
 		D22F5A74266C0D3C00729C71 /* ParcelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParcelsViewModel.swift; sourceTree = "<group>"; };
 		D22F5A7C266CC47000729C71 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		D22F5A7F266CC67100729C71 /* TableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableView.xib; sourceTree = "<group>"; };
@@ -141,9 +137,19 @@
 			isa = PBXGroup;
 			children = (
 				F4BDE32426427635006FC21D /* MainViewController.swift */,
-				D22F5A71266C0B9900729C71 /* ParcelsViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		D2CD5BF6266FC6620011A869 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D22F5A7C266CC47000729C71 /* TableView.swift */,
+				D22F5A7F266CC67100729C71 /* TableView.xib */,
+				D22F5A82266CD2E200729C71 /* TableViewCell.swift */,
+				D22F5A83266CD2E200729C71 /* TableViewCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		F4BDE31426427635006FC21D = {
@@ -167,17 +173,13 @@
 		F4BDE31F26427635006FC21D /* GettMobileDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				F4BDE32026427635006FC21D /* AppDelegate.swift */,
 				D201F44A266A4EA200BB264B /* Model */,
 				D201F42E266A3D2D00BB264B /* Network */,
 				D201F427266A3CAD00BB264B /* ViewModel */,
 				D201F3F8266A33A300BB264B /* Coordinator */,
-				F4BDE32026427635006FC21D /* AppDelegate.swift */,
 				D2CD5BF4266E66C80011A869 /* ViewController */,
-				D22F5A7C266CC47000729C71 /* TableView.swift */,
-				D22F5A7F266CC67100729C71 /* TableView.xib */,
-				D22F5A6E266C0AD800729C71 /* ParcelTableViewCell.swift */,
-				D22F5A82266CD2E200729C71 /* TableViewCell.swift */,
-				D22F5A83266CD2E200729C71 /* TableViewCell.xib */,
+				D2CD5BF6266FC6620011A869 /* View */,
 				F4BDE32626427635006FC21D /* Main.storyboard */,
 				F4BDE32926427637006FC21D /* Assets.xcassets */,
 				D201F46E266A575C00BB264B /* journey.json */,
@@ -329,7 +331,6 @@
 				D201F430266A4DB900BB264B /* NetworkType.swift in Sources */,
 				D22F5A84266CD2E200729C71 /* TableViewCell.swift in Sources */,
 				F4BDE32526427635006FC21D /* MainViewController.swift in Sources */,
-				D22F5A6F266C0AD800729C71 /* ParcelTableViewCell.swift in Sources */,
 				F4BDE32126427635006FC21D /* AppDelegate.swift in Sources */,
 				D201F434266A4DE900BB264B /* Networking.swift in Sources */,
 				D22F5A75266C0D3C00729C71 /* ParcelsViewModel.swift in Sources */,
@@ -340,7 +341,6 @@
 				D22F5A7D266CC47000729C71 /* TableView.swift in Sources */,
 				D201F3FE266A340800BB264B /* MainCoordinator.swift in Sources */,
 				D201F3FA266A33E200BB264B /* AppCorrdinator.swift in Sources */,
-				D22F5A72266C0B9900729C71 /* ParcelsViewController.swift in Sources */,
 				D201F429266A3CC700BB264B /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

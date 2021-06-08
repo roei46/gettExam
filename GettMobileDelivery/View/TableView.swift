@@ -33,7 +33,6 @@ class TableView: UIView {
 
             }
         }.disposed(by: disposeBag)
-
     }
     
     required init?(coder: NSCoder) {

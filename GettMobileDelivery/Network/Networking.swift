@@ -35,24 +35,6 @@ extension MethodsType {
 }
 
 struct Networking: NetworkType {
-    func preformNetwokTask<T>(endPoint: EndpointType, type: T.Type, success: @escaping ((T) -> Void), failure: @escaping () -> Void) where T : Decodable, T : Encodable {
-         let url = ("\(endPoint.baseURL)\(endPoint.path)")
-
-        Alamofire.request(url).responseJSON { (response) in
-            if response.result.isFailure {
-                failure()
-            }
-            
-            if let data = response.data {
-                let response = Response.init(data: data)
-                if let decode = response.decode(type) {
-                    success(decode)
-                } else {
-                    failure()
-                }
-            }
-        }
-    }
     
     func getRoute<T: Codable>(endPoint: EndpointType, type: T.Type) -> Observable<T> {
         
